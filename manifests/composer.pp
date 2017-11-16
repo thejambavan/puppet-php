@@ -38,9 +38,8 @@ class php::composer (
   }
 
   archive { 'download composer':
-    path         => $path,
-    source       => $source,
-    proxy_type   => $proxy_type,
+    target       => $path,
+    url          => $source,
     proxy_server => $proxy_server,
   }
   -> file { $path:
