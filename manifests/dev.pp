@@ -9,14 +9,12 @@
 #   The package name for the PHP development files
 #
 class php::dev(
-  String $ensure        = $::php::ensure,
-  String $package       = "${::php::package_prefix}${::php::params::dev_package_suffix}",
+  String $ensure        = $php::ensure,
+  String $package       = "${php::package_prefix}${php::params::dev_package_suffix}",
   Boolean $manage_repos = $php::manage_repos,
-) inherits ::php::params {
+) inherits php::params {
 
-  if $caller_module_name != $module_name {
-    warning('php::dev is private')
-  }
+  assert_private()
 
   # On FreeBSD there is no 'devel' package.
   $real_package = $facts['os']['family'] ? {
@@ -43,6 +41,6 @@ class php::dev(
   }
   package { $real_package:
     ensure  => $ensure,
-    require => Class['::php::packages'],
+    require => Class['php::packages'],
   }
 }

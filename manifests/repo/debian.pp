@@ -24,7 +24,7 @@
 #   Enable special sury handling
 #
 class php::repo::debian(
-  $location     = 'http://packages.dotdeb.org',
+  $location     = 'https://packages.dotdeb.org',
   $release      = 'wheezy-php56',
   $repos        = 'all',
   $include_src  = false,
@@ -36,9 +36,7 @@ class php::repo::debian(
   $sury         = true,
 ) {
 
-  if $caller_module_name != $module_name {
-    warning('php::repo::debian is private')
-  }
+  assert_private()
 
   include '::apt'
 

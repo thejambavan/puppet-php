@@ -10,14 +10,18 @@ describe 'php with default settings' do
     end
 
     case default[:platform]
+    when %r{ubuntu-18.04}
+      packagename = 'php7.2-fpm'
     when %r{ubuntu-16.04}
       packagename = 'php7.0-fpm'
     when %r{ubuntu-14.04}
       packagename = 'php5-fpm'
     when %r{el}
       packagename = 'php-fpm'
-    when %r{debian}
+    when %r{debian-8}
       packagename = 'php5-fpm'
+    when %r{debian-9}
+      packagename = 'php7.0-fpm'
     end
     describe package(packagename) do
       it { is_expected.to be_installed }
