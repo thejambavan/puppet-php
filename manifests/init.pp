@@ -236,6 +236,13 @@ class php (
     -> Anchor['php::end']
   }
 
+  # Extension installation fails if this dir doesn't exist,
+  # but we never actually check for it
+  file { $config_root_ini:
+    ensure => directory,
+    before => Class['php::cli']
+  }
+
   create_resources('php::extension', $real_extensions, {
     require => Class['php::cli'],
     before  => Anchor['php::end']
