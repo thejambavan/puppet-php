@@ -1,7 +1,6 @@
 # PHP params class
 #
 class php::params inherits php::globals {
-
   $ensure              = 'present'
   $fpm_service_enable  = true
   $fpm_service_ensure  = 'running'
@@ -13,6 +12,22 @@ class php::params inherits php::globals {
   $phpunit_source      = 'https://phar.phpunit.de/phpunit.phar'
   $phpunit_path        = '/usr/local/bin/phpunit'
   $phpunit_max_age     = 30
+  $pool_purge          = false
+
+  $fpm_pools = {
+    'www' => {
+      'catch_workers_output'      => 'no',
+      'listen'                    => '127.0.0.1:9000',
+      'listen_backlog'            => '-1',
+      'pm'                        => 'dynamic',
+      'pm_max_children'           => 50,
+      'pm_max_requests'           => 0,
+      'pm_max_spare_servers'      => 35,
+      'pm_min_spare_servers'      => 5,
+      'pm_start_servers'          => 5,
+      'request_terminate_timeout' => 0,
+    },
+  }
 
   case $facts['os']['family'] {
     'Debian': {
@@ -178,7 +193,7 @@ class php::params inherits php::globals {
       $fpm_group               = 'www'
       $embedded_package_suffix = 'embed'
       $embedded_inifile        = "${config_root}/php-embed.ini"
-      $package_prefix          = 'php56-'
+      $package_prefix          = $php::globals::package_prefix
       $compiler_packages       = ['gcc']
       $manage_repos            = false
       $root_group              = 'wheel'

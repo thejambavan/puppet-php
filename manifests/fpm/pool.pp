@@ -30,6 +30,9 @@
 # [*group*]
 #   The group that php-fpm should run as
 #
+# [*apparmor_hat*]
+#   The Apparmor hat to use
+#
 # [*pm*]
 #
 # [*pm_max_children*]
@@ -127,6 +130,7 @@ define php::fpm::pool (
   $listen_mode                             = undef,
   $user                                    = $php::fpm::config::user,
   $group                                   = $php::fpm::config::group,
+  Optional[String[1]] $apparmor_hat        = undef,
   $pm                                      = 'dynamic',
   $pm_max_children                         = '50',
   $pm_start_servers                        = '5',
@@ -162,7 +166,6 @@ define php::fpm::pool (
   $root_group                              = $php::params::root_group,
   Optional[Stdlib::Absolutepath] $base_dir = undef,
 ) {
-
   # The base class must be included first because it is used by parameter defaults
   if ! defined(Class['php']) {
     warning('You must include the php base class before using any php defined resources')
@@ -187,12 +190,12 @@ define php::fpm::pool (
   if ($ensure == 'absent') {
     file { "${pool_base_dir}/${pool}.conf":
       ensure => absent,
-      notify => Class['::php::fpm::service'],
+      notify => Class['php::fpm::service'],
     }
   } else {
     file { "${pool_base_dir}/${pool}.conf":
       ensure  => file,
-      notify  => Class['::php::fpm::service'],
+      notify  => Class['php::fpm::service'],
       require => Package[$real_package],
       content => template($template),
       owner   => root,

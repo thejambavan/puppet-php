@@ -25,17 +25,15 @@ class php::globals (
   Optional[Stdlib::Absolutepath] $fpm_pid_file  = undef,
   $rhscl_mode   = undef,
 ) {
-
   $default_php_version = $facts['os']['name'] ? {
     'Debian' => $facts['os']['release']['major'] ? {
       '9'     => '7.0',
-      '10'    => '7.3',
-      default => '5.x',
+      default => '7.3',
     },
     'Ubuntu' => $facts['os']['release']['major'] ? {
-      '18.04' => '7.2',
+      '20.04' => '7.4',
       '16.04' => '7.0',
-      default => '5.x',
+      default => '7.2',
     },
     default => '5.x',
   }
@@ -46,15 +44,6 @@ class php::globals (
     'Debian': {
       if $facts['os']['name'] == 'Ubuntu' {
         case $globals_php_version {
-          /^5\.4/: {
-            $default_config_root = '/etc/php5'
-            $default_fpm_pid_file = "/var/run/php/php${globals_php_version}-fpm.pid"
-            $fpm_error_log = '/var/log/php5-fpm.log'
-            $fpm_service_name = 'php5-fpm'
-            $ext_tool_enable = '/usr/sbin/php5enmod'
-            $ext_tool_query = '/usr/sbin/php5query'
-            $package_prefix = 'php5-'
-          }
           /^[57].[0-9]/: {
             $default_config_root = "/etc/php/${globals_php_version}"
             $default_fpm_pid_file = "/var/run/php/php${globals_php_version}-fpm.pid"
@@ -144,6 +133,14 @@ class php::globals (
       }
     }
     'FreeBSD': {
+      case $globals_php_version {
+        /^(\d)\.(\d)$/: {
+          $package_prefix = "php${1}${2}-"
+        }
+        default: {
+          $package_prefix = 'php56-'
+        }
+      }
       $default_config_root  = '/usr/local/etc'
       $default_fpm_pid_file = '/var/run/php-fpm.pid'
       $fpm_service_name     = undef
