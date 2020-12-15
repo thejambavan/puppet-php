@@ -219,6 +219,7 @@ class php (
     class { 'php::composer':
       proxy_type   => $proxy_type,
       proxy_server => $proxy_server,
+      require => Class['php::cli'],
     }
   }
   if $pear {
