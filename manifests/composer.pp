@@ -39,7 +39,7 @@ class php::composer (
 ) inherits php::params {
   assert_private()
 
-  notify { "composer path: ${path}":
+  notify { "composer path: ${path} url: ${source}":
   }
 
   archive { 'download composer':
