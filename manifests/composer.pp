@@ -42,25 +42,25 @@ class php::composer (
   notify { "composer path: ${path}":
   }
 
-#  archive { 'download composer':
-#    target       => $path,
-#    url          => $source,
-#    proxy_server => $proxy_server,
-#  }
-#  -> file { $path:
-#    mode  => '0555',
-#    owner => root,
-#    group => $root_group,
-#  }
+  archive { 'download composer':
+    target       => $path,
+    url          => $source,
+    proxy_server => $proxy_server,
+  }
+  -> file { $path:
+    mode  => '0555',
+    owner => root,
+    group => $root_group,
+  }
 
-#  if $auto_update {
-#    class { 'php::composer::auto_update':
-#      max_age      => $max_age,
-#      source       => $source,
-#      path         => $path,
-#      channel      => $channel,
-#      proxy_type   => $proxy_type,
-#      proxy_server => $proxy_server,
-#    }
-#  }
+  if $auto_update {
+    class { 'php::composer::auto_update':
+      max_age      => $max_age,
+      source       => $source,
+      path         => $path,
+      channel      => $channel,
+      proxy_type   => $proxy_type,
+      proxy_server => $proxy_server,
+    }
+  }
 }
