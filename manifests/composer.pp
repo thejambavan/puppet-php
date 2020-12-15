@@ -43,7 +43,8 @@ class php::composer (
   }
 
   archive { 'download composer':
-    target       => $path,
+    #target       => $path,
+    target       => '/usr/local/bin/composer',
     url          => $source,
     proxy_server => $proxy_server,
   }
