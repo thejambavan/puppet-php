@@ -53,14 +53,14 @@ class php::composer (
     group => $root_group,
   }
 
-  if $auto_update {
-    class { 'php::composer::auto_update':
-      max_age      => $max_age,
-      source       => $source,
-      path         => $path,
-      channel      => $channel,
-      proxy_type   => $proxy_type,
-      proxy_server => $proxy_server,
-    }
-  }
+#  if $auto_update {
+#    class { 'php::composer::auto_update':
+#      max_age      => $max_age,
+#      source       => $source,
+#      path         => $path,
+#      channel      => $channel,
+#      proxy_type   => $proxy_type,
+#      proxy_server => $proxy_server,
+#    }
+#  }
 }
