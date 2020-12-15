@@ -42,16 +42,16 @@ class php::composer (
   notify { "composer path: ${path}":
   }
 
-  archive { 'download composer':
-    target       => $path,
-    url          => $source,
-    proxy_server => $proxy_server,
-  }
-  -> file { $path:
-    mode  => '0555',
-    owner => root,
-    group => $root_group,
-  }
+#  archive { 'download composer':
+#    target       => $path,
+#    url          => $source,
+#    proxy_server => $proxy_server,
+#  }
+#  -> file { $path:
+#    mode  => '0555',
+#    owner => root,
+#    group => $root_group,
+#  }
 
 #  if $auto_update {
 #    class { 'php::composer::auto_update':
