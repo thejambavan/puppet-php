@@ -29,7 +29,7 @@
 #Stdlib::Absolutepath $path           = $php::params::composer_path,
 class php::composer (
   String $source                       = $php::params::composer_source,
-  $path                                = $php::params::composer_path,
+  Stdlib::Absolutepath $path           = $php::params::composer_path,
   $proxy_type                          = undef,
   $proxy_server                        = undef,
   Php::ComposerChannel $channel        = 'stable',
