@@ -39,9 +39,6 @@ class php::composer (
 ) inherits php::params {
   assert_private()
 
-  notify { "composer path: ${path} url: ${source}":
-  }
-
   archive { $path:
     #target      => $path,
     url          => $source,
