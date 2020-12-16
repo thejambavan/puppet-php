@@ -42,12 +42,12 @@ class php::composer (
   notify { "composer path: ${path} url: ${source}":
   }
 
-#  archive { 'download composer':
-#    #target       => $path,
-#    target       => '/usr/local/bin/composer',
-#    url          => $source,
-#    proxy_server => $proxy_server,
-#  }
+  archive { 'download composer':
+    #target       => $path,
+    target       => '/usr/local/bin/composer',
+    url          => $source,
+    proxy_server => $proxy_server,
+  }
 #  -> file { $path:
 #    mode  => '0555',
 #    owner => root,
