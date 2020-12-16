@@ -34,6 +34,7 @@ class php::composer (
   $proxy_server                        = undef,
   Php::ComposerChannel $channel        = 'stable',
   Boolean $auto_update                 = true,
+  Boolean $bin_links                   = true,
   Integer $max_age                     = $php::params::composer_max_age,
   Variant[Integer, String] $root_group = $php::params::root_group,
 ) inherits php::params {
@@ -61,6 +62,22 @@ class php::composer (
       channel      => $channel,
       proxy_type   => $proxy_type,
       proxy_server => $proxy_server,
+    }
+  }
+  if $bin_links {
+    file { '/usr/bin/pear':
+      ensure => 'link',
+      target => "${$php::params::php_bin_dir}/pear",
+    }
+
+    file { '/usr/bin/pecl':
+      ensure => 'link',
+      target => "${$php::params::php_bin_dir}/pecl",
+    }
+
+    file { '/usr/bin/php':
+      ensure => 'link',
+      target => "${$php::params::php_bin_dir}/php",
     }
   }
 }
