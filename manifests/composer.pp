@@ -40,6 +40,11 @@ class php::composer (
 ) inherits php::params {
   assert_private()
 
+  # turn "7.4" into "74" so that we can do symlinks in /usr/bin to 
+  # keep composer happy
+  $php_munged_version = regsubst($::php::globals::php_version, '\.', '', 'G')
+
+
   archive { $path:
     #target      => $path,
     url          => $source,
@@ -67,17 +72,17 @@ class php::composer (
   if $bin_links {
     file { '/usr/bin/pear':
       ensure => 'link',
-      target => "${$php::params::php_bin_dir}/pear",
+      target => "/usr/bin/${php_munged_version}-pear",
     }
 
-    file { '/usr/bin/pecl':
+    file { "/usr/bin/${php_munged_version}-pecl":
       ensure => 'link',
-      target => "${$php::params::php_bin_dir}/pecl",
+      target => "pecl",
     }
 
-    file { '/usr/bin/php':
+    file { "/usr/bin/php${php_munged_version}":
       ensure => 'link',
-      target => "${$php::params::php_bin_dir}/php",
+      target => "php",
     }
   }
 }
