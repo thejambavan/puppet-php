@@ -75,14 +75,14 @@ class php::composer (
       target => "/usr/bin/php${php_munged_version}-pear",
     }
 
-    file { "/usr/bin/pecl":
-      ensure => 'link',
-      target => "/usr/bin/php${php_munged_version}-pecl",
-    }
+    #file { "/usr/bin/pecl":
+    #  ensure => 'link',
+    #  target => "/usr/bin/php${php_munged_version}-pecl",
+    #}
 
     file { "/usr/bin/php":
       ensure => 'link',
-      target => "/usr/bin/php${php_munged_version}"",
+      target => "/usr/bin/php${php_munged_version}",
     }
   }
 }
