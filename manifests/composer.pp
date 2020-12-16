@@ -48,12 +48,12 @@ class php::composer (
     proxy_server => $proxy_server,
     extract      => false,
     before       => File[$path],
+    creates      => $path,
   }
   file { $path:
     mode    => '0555',
     owner   => root,
     group   => $root_group,
-    creates => $path,
   }
 
   if $auto_update {
