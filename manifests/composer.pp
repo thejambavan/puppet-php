@@ -43,11 +43,12 @@ class php::composer (
   }
 
   if $path {
-    archive { 'download composer':
-      #target       => $path,
-      target       => '/usr/local/bin/composer',
+    #archive { 'download composer':
+    archive { $path:
+      #target      => $path,
       url          => $source,
       proxy_server => $proxy_server,
+      extract      => false,
     }
   }
   #  -> file { $path:
