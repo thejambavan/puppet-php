@@ -72,17 +72,17 @@ class php::composer (
   if $bin_links {
     file { '/usr/bin/pear':
       ensure => 'link',
-      target => "/usr/bin/${php_munged_version}-pear",
+      target => "/usr/bin/php${php_munged_version}-pear",
     }
 
-    file { "/usr/bin/${php_munged_version}-pecl":
+    file { "/usr/bin/pecl":
       ensure => 'link',
-      target => "pecl",
+      target => "/usr/bin/php${php_munged_version}-pecl",
     }
 
-    file { "/usr/bin/php${php_munged_version}":
+    file { "/usr/bin/php":
       ensure => 'link',
-      target => "php",
+      target => "/usr/bin/php${php_munged_version}"",
     }
   }
 }
