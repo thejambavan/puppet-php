@@ -38,7 +38,7 @@ class php::repo::redhat (
   }
 
   yumrepo { "remi-${yum_repo}":
-    descr      => 'Remi\'s PHP 7.4 RPM repository for Enterprise Linux $releasever - $basearch',
+    descr      => "Remi's ${yum_repo} RPM repository for Enterprise Linux $releasever - $basearch",
     mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/${yum_repo}/mirror",
     enabled    => 1,
     gpgcheck   => 1,
