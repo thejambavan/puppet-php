@@ -7,7 +7,7 @@
 #
 
 class php::repo::redhat (
-  $repoversion = $::php::globals::php_version,
+  $yum_repo = $::php::globals::php_version,
 ) {
 
   case $facts['os']['name'] {
@@ -37,9 +37,9 @@ class php::repo::redhat (
     }
   }
 
-  yumrepo { "remi-${repoversion}":
+  yumrepo { "remi-${yum_repo}":
     descr      => 'Remi\'s PHP 7.4 RPM repository for Enterprise Linux $releasever - $basearch',
-    mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/${repoversion}/mirror",
+    mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/${yum_repo}/mirror",
     enabled    => 1,
     gpgcheck   => 1,
     gpgkey     => "https://rpms.remirepo.net/${keyname}",
