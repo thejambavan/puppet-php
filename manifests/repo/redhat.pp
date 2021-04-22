@@ -38,20 +38,20 @@ class php::repo::redhat (
   }
 
   yumrepo { "remi-${repoversion}":
-    descr    => 'Remi\'s PHP 7.4 RPM repository for Enterprise Linux $releasever - $basearch',
-    baseurl  => "http://mirrors.ukfast.co.uk/sites/remi/${distro}/${releasever}/${repoversion}/$basearch",
-    enabled  => 1,
-    gpgcheck => 1,
-    gpgkey   => "https://rpms.remirepo.net/${keyname}",
-    priority => 1,
+    descr      => 'Remi\'s PHP 7.4 RPM repository for Enterprise Linux $releasever - $basearch',
+    mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/${repoversion}/mirror",
+    enabled    => 1,
+    gpgcheck   => 1,
+    gpgkey     => "https://rpms.remirepo.net/${keyname}",
+    priority   => 1,
   }
 
   yumrepo { 'remi-safe':
-    descr    => 'Safe Remi\'s RPM repository for Enterprise Linux $releasever - $basearch',
-    baseurl  => "http://mirrors.ukfast.co.uk/sites/remi/${distro}/${releasever}/safe/$basearch",
-    enabled  => 1,
-    gpgcheck => 1,
-    gpgkey   => "https://rpms.remirepo.net/${keyname}",
-    priority => 1,
+    descr      => 'Safe Remi\'s RPM repository for Enterprise Linux $releasever - $basearch',
+    mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/safe/mirror",
+    enabled    => 1,
+    gpgcheck   => 1,
+    gpgkey     => "https://rpms.remirepo.net/${keyname}",
+    priority   => 1,
   }
 }
