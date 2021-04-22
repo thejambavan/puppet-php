@@ -19,6 +19,8 @@ describe 'php', type: :class do
                           end
                         when 'Ubuntu'
                           case facts[:os]['release']['major']
+                          when '20.04'
+                            'php7.4-cli'
                           when '18.04'
                             'php7.2-cli'
                           when '16.04'
@@ -39,6 +41,8 @@ describe 'php', type: :class do
                           end
                         when 'Ubuntu'
                           case facts[:os]['release']['major']
+                          when '20.04'
+                            'php7.4-fpm'
                           when '18.04'
                             'php7.2-fpm'
                           when '16.04'
@@ -59,6 +63,8 @@ describe 'php', type: :class do
                           end
                         when 'Ubuntu'
                           case facts[:os]['release']['major']
+                          when '20.04'
+                            'php7.4-dev'
                           when '18.04'
                             'php7.2-dev'
                           when '16.04'
@@ -67,7 +73,9 @@ describe 'php', type: :class do
                             'php5-dev'
                           end
                         end
-
+      describe 'works without params' do
+        it { is_expected.to compile.with_all_deps }
+      end
       describe 'when called with no parameters' do
         case facts[:osfamily]
         when 'Suse', 'RedHat', 'CentOS'
@@ -176,6 +184,8 @@ describe 'php', type: :class do
                       end
                     when 'Ubuntu'
                       case facts[:os]['release']['major']
+                      when '20.04'
+                        '/etc/php/7.4/fpm/pool.d/www.conf'
                       when '18.04'
                         '/etc/php/7.2/fpm/pool.d/www.conf'
                       when '16.04'
@@ -216,6 +226,8 @@ describe 'php', type: :class do
                       end
                     when 'Ubuntu'
                       case facts[:os]['release']['major']
+                      when '20.04'
+                        '/etc/php/7.4/fpm/pool.d/www.conf'
                       when '18.04'
                         '/etc/php/7.2/fpm/pool.d/www.conf'
                       when '16.04'
@@ -235,6 +247,48 @@ describe 'php', type: :class do
                   end
 
         it { is_expected.to contain_file(dstfile).with_content(%r{group = nginx}) }
+      end
+
+      describe 'when configured with a pool with apparmor_hat parameter' do
+        let(:params) { { fpm_pools: { 'www' => { 'apparmor_hat' => 'www' } } } }
+
+        it { is_expected.to contain_php__fpm__pool('www').with(apparmor_hat: 'www') }
+
+        dstfile = case facts[:osfamily]
+                  when 'Debian'
+                    case facts[:os]['name']
+                    when 'Debian'
+                      case facts[:os]['release']['major']
+                      when '10'
+                        '/etc/php/7.3/fpm/pool.d/www.conf'
+                      when '9'
+                        '/etc/php/7.0/fpm/pool.d/www.conf'
+                      else
+                        '/etc/php5/fpm/pool.d/www.conf'
+                      end
+                    when 'Ubuntu'
+                      case facts[:os]['release']['major']
+                      when '20.04'
+                        '/etc/php/7.4/fpm/pool.d/www.conf'
+                      when '18.04'
+                        '/etc/php/7.2/fpm/pool.d/www.conf'
+                      when '16.04'
+                        '/etc/php/7.0/fpm/pool.d/www.conf'
+                      else
+                        '/etc/php5/fpm/pool.d/www.conf'
+                      end
+                    end
+                  when 'Archlinux'
+                    '/etc/php/php-fpm.d/www.conf'
+                  when 'Suse'
+                    '/etc/php5/fpm/pool.d/www.conf'
+                  when 'RedHat'
+                    '/etc/php-fpm.d/www.conf'
+                  when 'FreeBSD'
+                    '/usr/local/etc/php-fpm.d/www.conf'
+                  end
+
+        it { is_expected.to contain_file(dstfile).with_content(%r{apparmor_hat = www}) }
       end
 
       describe 'when fpm is disabled' do
@@ -308,6 +362,13 @@ describe 'php', type: :class do
             it { is_expected.to contain_php__config__setting("/etc/opt/rh/#{scl_php_version}/php.ini: Date/date.timezone").with_value('Europe/Berlin') }
           end
         end
+      end
+
+      describe 'when called with pool_purge => true and fpm_pools => {}' do
+        let(:params) { { pool_purge: true, fpm_pools: {} } }
+
+        it { is_expected.to contain_class('php::fpm').with(pool_purge: true) }
+        it { is_expected.not_to contain_php__fpm__pool('www') }
       end
     end
   end

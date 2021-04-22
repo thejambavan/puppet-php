@@ -21,6 +21,8 @@ describe 'php::extension' do
                     end
                   when 'Ubuntu'
                     case facts[:os]['release']['major']
+                    when '20.04'
+                      '/etc/php/7.4/mods-available'
                     when '18.04'
                       '/etc/php/7.2/mods-available'
                     when '16.04'
@@ -187,6 +189,21 @@ describe 'php::extension' do
           end
 
           it { is_expected.to contain_php__config('xdebug').with_config('zend_extension' => '/usr/lib/php5/20100525/xdebug.so') }
+        end
+
+        if facts[:os]['family'] == 'Debian'
+          context 'on Debian family' do
+            context 'zend extensions call ext_tool_enable' do
+              let(:title) { 'xdebug' }
+              let(:params) do
+                {
+                  zend: true
+                }
+              end
+
+              it { is_expected.to contain_exec('ext_tool_enable_xdebug') }
+            end
+          end
         end
 
         case facts[:os]['name']
