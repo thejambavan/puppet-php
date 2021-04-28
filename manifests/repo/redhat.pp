@@ -7,8 +7,9 @@
 #
 
 class php::repo::redhat (
-  $yum_repo = 'remi_php71',
+  $yum_repo = $::php::globals::php_version,
 ) {
+
   case $facts['os']['name'] {
     /(?i:Amazon)/: {
       $releasever = '6'
@@ -36,23 +37,21 @@ class php::repo::redhat (
     }
   }
 
-  yumrepo { 'remi':
-    descr      => 'Remi\'s RPM repository for Enterprise Linux $releasever - $basearch',
-    mirrorlist => "https://rpms.remirepo.net/${distro}/${releasever}/remi/mirror",
+  yumrepo { "remi-${yum_repo}":
+    descr      => "Remi's ${yum_repo} RPM repository for Enterprise Linux $releasever - $basearch",
+    mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/${yum_repo}/mirror",
     enabled    => 1,
     gpgcheck   => 1,
     gpgkey     => "https://rpms.remirepo.net/${keyname}",
     priority   => 1,
   }
 
-  if $facts['os']['name'] != 'Fedora' { # PHP 5 has not been supported on Fedora for a long time
-    yumrepo { 'remi-php56':
-      descr      => 'Remi\'s PHP 5.6 RPM repository for Enterprise Linux $releasever - $basearch',
-      mirrorlist => "https://rpms.remirepo.net/${distro}/${releasever}/php56/mirror",
-      enabled    => 1,
-      gpgcheck   => 1,
-      gpgkey     => 'https://rpms.remirepo.net/RPM-GPG-KEY-remi',
-      priority   => 1,
-    }
+  yumrepo { 'remi-safe':
+    descr      => 'Safe Remi\'s RPM repository for Enterprise Linux $releasever - $basearch',
+    mirrorlist => "http://cdn.remirepo.net/${distro}/${releasever}/safe/mirror",
+    enabled    => 1,
+    gpgcheck   => 1,
+    gpgkey     => "https://rpms.remirepo.net/${keyname}",
+    priority   => 1,
   }
 }
